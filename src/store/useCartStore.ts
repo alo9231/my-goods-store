@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware'; // 1. 미들웨어 임포트
-import { Product } from '@/types/product';
+
 
 interface Product {
   id: number;

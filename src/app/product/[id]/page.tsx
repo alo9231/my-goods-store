@@ -100,8 +100,8 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                     {/* 장바구니 담기 버튼 */}
                     <button 
                         onClick={() => {
-                            addItem(product);
-                            alert("장바구니에 담겼습니다! 🛒");
+                            addItem({ ...product, quantity: 1 });
+                           // alert("장바구니에 담겼습니다! 🛒");
                         }}
                         className="mt-4 flex items-center justify-center gap-3 w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl hover:bg-blue-700 active:scale-[0.98] transition-all shadow-xl shadow-blue-100"
                     >
