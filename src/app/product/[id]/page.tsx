@@ -2,6 +2,7 @@
 
 import { useCartStore } from "@/store/useCartStore"; 
 import Link from "next/link";
+import api from '@/lib/api';
 import { use, useEffect, useState } from "react";
 import { ChevronLeft, ShoppingCart } from "lucide-react"; // 아이콘 추가
 
@@ -26,17 +27,23 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     const addItem = useCartStore((state) => state.addItem);
     
     useEffect(() => {
-        // 실제 존재하는 ID(1~20)로 테스트해보세요!
-        fetch(`https://fakestoreapi.com/products/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data) {
-                    setProduct(data);
-                }
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
-    }, [id]);
+        const fetchProduct = async () => {
+            try {
+                setLoading(true); // 로딩 시작
+                const res = await api.get(`/products/${id}`);
+                setProduct(res.data);
+            } catch (error) {
+                console.error("데이터 로드 실패:", error);
+            } finally {
+                setLoading(false); // 로딩 종료
+            }
+        };
+
+        // ⚠️ 중요: fetchProduct 함수 '밖'에서 호출해야 함
+        if (id) {
+            fetchProduct();
+        }
+    }, [id]); // id가 바뀔 때만 딱 한 번 실행
 
     if (loading) return <div className="p-20 text-center text-slate-500 animate-pulse">상품 정보를 불러오는 중...</div>;
 
@@ -60,8 +67,8 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             </Link>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-                {/* 왼쪽: 상품 이미지 */}
-                <div className="bg-white p-10 rounded-3xl border border-slate-100 shadow-sm flex justify-center items-center aspect-square">
+                {/* 왼쪽: 상품 이미지 : aspect-ratio를 활용해 높이를 고정 */}
+                <div className="aspect-square bg-white p-10 rounded-3xl border border-slate-100 shadow-sm flex justify-center items-center aspect-square">
                     <img 
                         src={product.image} 
                         alt={product.title} 

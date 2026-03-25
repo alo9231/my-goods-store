@@ -18,10 +18,10 @@ export default function Navbar() {
           GOODS <span className="text-blue-600">STORE</span>
         </Link>
 
-        <Link href="/cart" className='relative cursor-pointer group p-2'>
+        <Link href="/cart" className='cart-icon relative cursor-pointer group p-2'>
           <ShoppingCart className="w-6 h-6 text-slate-700 group-hover:text-blue-600 transition-colors" />
           {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+            <span className="cart-badge absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
               {totalItems}
             </span>
           )}

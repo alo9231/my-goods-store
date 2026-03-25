@@ -1,50 +1,53 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react'; // useRef 추가
-import gsap from 'gsap'; // gsap 임포트
-import { api } from '@/api/axiosInstance';
+import { useState, useEffect, useRef } from 'react';
+import api from '@/lib/api'; 
+import gsap from 'gsap'; 
 import { Product } from '@/types/product';
 import ProductCard from '@/components/ProductCard';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  // 1. 변수명 통일: selectedCategory로 고정
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const isFirstRender = useRef(true); // 👈 1. 처음 마운트인지 확인용 Ref
+  const isFirstRender = useRef(true); 
 
   const categories = ["all", "electronics", "jewelery", "men's clothing", "women's clothing"];
 
-  // 1. 데이터 가져오기
+  // 2. 함수명 오타 수정 및 로직 정리
+  const fetchProducts = async (category : string) => {
+    try {
+      setSelectedCategory(category);
+
+      // API 주소 분기 처리
+      const url = category === 'all'
+        ? '/products'
+        : `/products/category/${category.toLowerCase()}`;
+
+      const res = await api.get(url);  // 👈 여기서 새로운 데이터를 서버에 요청!
+      setProducts(res.data); // 👈 받아온 새로운 데이터로 상태 교체
+
+    } catch (error) { // 3. 중괄호 추가
+      console.log("상품 로드 실패 👉😶‍🌫️ ", error);
+    }
+  };
+
+  // 초기 로딩
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/products');
-        setProducts(response.data);
-      } catch (error) {
-        console.error("데이터 로딩 실패함! 이유 👉👉 ", error);
-      }
-    };
-    fetchProducts();
+    fetchProducts('all');
   }, []);
 
-  // 2. 중요: 상태(State) 대신 변수로 바로 계산 (리액트 경고 해결 비법)
-  const filteredProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(p => p.category.toLowerCase() === selectedCategory.toLowerCase());
+  // ✨ GSAP 애니메이션
+  useEffect(() => {
+    if (products.length === 0) return;
 
-
- // ✨ GSAP 애니메이션 (필터 클릭 시에만!)
-  useEffect(()=>{
-    // 데이터가 아직 없으면 애니메이션 실행 안 함
-    if (filteredProducts.length === 0) return;
-
-    // 👈 2. 처음 페이지에 들어왔을 때는 애니메이션 없이 바로 보여주기
     if (isFirstRender.current) {
       gsap.set(".product-card", { opacity: 1, y: 0 });
-      isFirstRender.current = false; // 첫 렌더링 이후로는 false로 변경
+      isFirstRender.current = false; 
       return;
     }
 
-    // 👈 3. 이후 카테고리(필터)를 변경했을 때만 애니메이션 실행
+    // 카테고리 변경 시 애니메이션
     gsap.fromTo(".product-card", 
       { opacity: 0, y: 30 }, 
       { 
@@ -52,12 +55,11 @@ export default function Home() {
         y: 0, 
         duration: 0.5, 
         stagger: 0.08, 
-        ease: "back.out(1.2)" // 처음보다 살짝 덜 튀게 조절해서 세련미 추가
+        ease: "back.out(1.2)" 
       }
     );
+  }, [products]); // 4. products 데이터가 바뀔 때마다 실행되도록 변경
 
-  }, [selectedCategory, filteredProducts]); // selectedCategory가 바뀔 때 실행
-  
   return (
     <main className="min-h-screen bg-slate-50 p-8">
       <header className="mb-12 text-center">
@@ -69,7 +71,8 @@ export default function Home() {
           {categories.map((category) => (
             <button
               key={category}
-              onClick={() => setSelectedCategory(category)}
+              // 클라이언트 필터링 대신 서버에 다시 요청하도록 변경
+              onClick={() => fetchProducts(category)} // 클릭한 카테고리 데이터 요청
               className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
                 selectedCategory === category
                   ? 'bg-blue-600 text-white shadow-md'
@@ -82,12 +85,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 필터링된 리스트 출력 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-        {filteredProducts.map((product) => (
-          // 👇 gsap 실행용 class 추가
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto items-stretch">
+        {products.map((product) => (
           <div key={product.id} className='product-card'>
-             <ProductCard key={product.id} product={product} />
+             <ProductCard product={product} />
           </div>         
         ))}
       </div>

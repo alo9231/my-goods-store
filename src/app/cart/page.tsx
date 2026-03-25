@@ -51,8 +51,8 @@ export default function CartPage() {
           <div key={item.id} className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-4">
 
-              {/* 상품 이미지 */}
-              <div className="w-20 h-20 bg-white rounded-xl border border-slate-100 p-2 flex items-center justify-center shadow-sm">
+              {/* 상품 이미지 : aspect-ratio를 활용해 높이를 고정 */}
+              <div className="aspect-square w-20 h-20 bg-white rounded-xl border border-slate-100 p-2 flex items-center justify-center shadow-sm">
                 <img src={item.image} alt={item.title} className="w-16 h-16 object-contain" />
               </div>
               
