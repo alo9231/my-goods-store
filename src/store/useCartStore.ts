@@ -1,46 +1,58 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Product } from '@/types/product';
 
-interface CartItem extends Product {
-  quantity: number;
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  quantity: number; // 수량은 필수값으로 설정
 }
 
 interface CartState {
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-  clearCart: () => void;
+  cart: Product[];
+  addItem: (product: any) => void;
+  addQuantity: (id: number) => void;    // 수량 +
+  removeQuantity: (id: number) => void; // 수량 -
+  deleteItem: (id: number) => void;     // 삭제
+  clearCart: () => void; // 👈 전체 삭제 
 }
 
-// 괄호 짝을 잘 봐야 함! create<CartState>()( persist( ... ) ) 구조임
-//ustand의 create는 create<T>()( ... ) 처럼 뒤에 괄호가 두 번 붙는 독특한 문법을 가진다. (Currying이라고 함.)
-export const useCartStore = create<CartState>()(
-  persist(
-    (set) => ({
-      cart: [],
-      addToCart: (product) =>
-        set((state) => {
-          const existingItem = state.cart.find((item) => item.id === product.id);
-          if (existingItem) {
-            return {
-              cart: state.cart.map((item) =>
-                item.id === product.id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item
-              ),
-            };
-          }
-          return { cart: [...state.cart, { ...product, quantity: 1 }] };
-        }),
-      removeFromCart: (productId) =>
-        set((state) => ({
-          cart: state.cart.filter((item) => item.id !== productId),
-        })),
-      clearCart: () => set({ cart: [] }),
-    }),
-    {
-      name: 'cart-storage', // 로컬스토리지에 저장될 이름
+export const useCartStore = create<CartState>((set) => ({
+  cart: [],
+  
+  // 장바구니 담기
+  addItem: (product) => set((state) => {
+    const isExist = state.cart.find((item) => item.id === product.id);
+    if (isExist) {
+      return {
+        cart: state.cart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        ),
+      };
     }
-  )
-);
+    return { cart: [...state.cart, { ...product, quantity: 1 }] };
+  }),
+
+  // 수량 증가 (+)
+  addQuantity: (id) => set((state) => ({
+    cart: state.cart.map((item) =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    ),
+  })),
+
+  // 수량 감소 (-)
+  removeQuantity: (id) => set((state) => ({
+    cart: state.cart.map((item) =>
+      item.id === id && item.quantity > 1 
+        ? { ...item, quantity: item.quantity - 1 } 
+        : item
+    ),
+  })),
+
+  // 상품 삭제
+  deleteItem: (id) => set((state) => ({
+    cart: state.cart.filter((item) => item.id !== id),
+  })),
+
+  clearCart: () => set({ cart: [] }),
+}));
