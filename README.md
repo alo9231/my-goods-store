@@ -134,3 +134,23 @@
 <br/>
 
 ## 📁 프로젝트 구조
+
+```text
+src/
+├── api/                # API 통신 (Axios 인스턴스, Endpoint 관리)
+├── assets/             # 정적 리소스 (Images, Fonts, Global SCSS)
+│   ├── images/         # 이미지 파일
+│   └── styles/         # 공통 스타일 (_variables.scss, _mixin.scss)
+├── components/         # 재사용 가능한 공통 UI 컴포넌트
+│   ├── common/         # Button, Input, Modal, Loader 등
+│   ├── layout/         # Header, Footer, Navigation 등 레이아웃
+│   └── product/        # 상품 카드, 상품 상세 리스트 등 도메인 컴포넌트
+├── hooks/              # 커스텀 훅 (비즈니스 로직 분리)
+├── pages/              # 라우트 단위 페이지 컴포넌트
+│   ├── Home/           # 메인 페이지
+│   ├── Login/          # 로그인 페이지
+│   └── Cart/           # 장바구니 페이지
+├── store/              # 전역 상태 관리 (Redux, Zustand, Pinia 등)
+├── utils/              # 공통 유틸리티 함수 (날짜 포맷팅, 로컬스토리지 제어 등)
+├── App.js              # 최상위 루트 컴포넌트
+└── main.js             # 엔트리 포인트 (애플리케이션 시작점)
