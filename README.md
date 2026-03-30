@@ -1,51 +1,98 @@
-# 🛒 My Goods Store (Shopping SPA)
-<p align="left">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Zustand-443E38?style=flat-square&logo=React&logoColor=white"/>
-  <img src="https://img.shields.io/badge/GSAP-88CE02?style=flat-square&logo=GSAP&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=Tailwind-CSS&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white"/>
-</p>
+# 🛒 My Goods Store
 
-> **React(Vite)와 TypeScript**를 기반으로 한 인터랙티브 커머스 대시보드입니다.  
-> 사용자의 조작에 기분 좋게 반응하는 인터랙션을 구현하고, 안정적인 상태 관리를 통해 실무적인 SPA 구조를 설계했습니다.
+사용자가 상품을 탐색하고 장바구니에 담아 구매 흐름을 경험할 수 있도록 구현한  
+이커머스 프론트엔드 웹 애플리케이션입니다.
 
-## 🔗 프로젝트 링크
-- **Live Demo**: [https://my-goods-store.vercel.app/](https://my-goods-store.vercel.app/)
+<br/>
+
+## 🔗 배포 링크
+👉 (https://my-goods-store.vercel.app/)
+
+<br/>
+
+## 📌 프로젝트 개요
+
+이 프로젝트는 단순한 UI 구현을 넘어서,  
+**사용자의 상품 탐색 → 선택 → 구매 흐름을 자연스럽게 연결하는 것**을 목표로 개발했습니다.
+
+특히 프론트엔드 관점에서:
+- 상태 관리 구조 설계
+- 컴포넌트 재사용성
+- 사용자 경험 개선  
+에 집중했습니다.
+
+<br/>
+
+## 🚀 주요 기능
+
+- 🛍 상품 목록 조회
+- 🔍 상품 상세 페이지
+- 🧺 장바구니 기능
+- ➕ 수량 변경 및 상품 관리
+- 💳 구매 흐름 UI 구현
+
+<br/>
+
+## 💡 문제 해결 및 구현 포인트
+
+### 1. 상태 관리 복잡도 해결
+상품 목록, 장바구니, 선택 상태 등이 분산되면서 상태 관리가 복잡해지는 문제가 있었습니다.
+
+→ 전역 상태 관리 방식을 도입하여  
+**컴포넌트 간 상태 공유를 단순화하고 유지보수성을 개선했습니다.**
 
 ---
 
-## 📑 주요 기능 (Key Features)
+### 2. 컴포넌트 재사용성 개선
+초기에는 페이지 단위로 컴포넌트를 구성하면서 중복 코드가 발생했습니다.
 
-### ✅ 실시간 상품 필터링 (Dynamic Filtering)
-- **Fake Store API** 연동을 통한 실시간 카테고리 필터링 시스템 구현
-- `Zustand` 전역 상태 관리를 통해 탭 전환 시 즉각적인 데이터 동기화 처리
-
-### ✅ 고도화된 인터랙티브 UI (GSAP Animation)
-- **Stagger Motion**: 상품 리스트 렌더링 시 시각적 흐름을 부여하는 순차 등장 애니메이션 적용
-- **Render Control**: `useRef`를 활용해 페이지 진입 시 불필요한 깜빡임을 제어하고, 필터 동작 시에만 모션이 작동하도록 UX 최적화
-
-### ✅ 장바구니 시스템 (Cart Logic)
-- SPA 구조 내에서 장바구니 담기, 상태 유지 및 비어있는 예외 케이스 처리
-- Next.js의 `Link` 컴포넌트와 인터랙티브 피드백을 통한 부드러운 페이지 전환
+→ 공통 UI 요소를 분리하여  
+**재사용 가능한 컴포넌트 구조로 리팩토링**했습니다.
 
 ---
 
-## 🛠 기술적 고민 (Problem Solving)
+### 3. 사용자 경험(UX) 개선
+장바구니 추가, 수량 변경 등 사용자 액션에 대한 피드백이 부족했습니다.
 
-### 1. 초기 렌더링 애니메이션 제어
-페이지 이동 후 메인으로 돌아올 때마다 GSAP 애니메이션이 재실행되어 화면이 깜빡이는 현상이 있었습니다. 이를 해결하기 위해 `useRef`로 첫 마운트 여부를 추적하고, 마운트 시점에는 `gsap.set`을, 이후 필터 변경 시에만 `gsap.fromTo`가 작동하도록 로직을 개선하여 사용자 경험을 향상시켰습니다.
+→ 상태 변화에 따라 UI가 즉각 반응하도록 구현하여  
+**사용자 인터랙션 경험을 개선했습니다.**
 
-### 2. 효율적인 전역 상태 관리
-장바구니 정보와 선택된 카테고리를 `Zustand`로 관리하여, 불필요한 Props Drilling을 방지하고 컴포넌트 간 데이터 전달 구조를 단순화했습니다.
+<br/>
 
----
+## 🛠 기술 스택
 
-## 📂 폴더 구조 (Directory Structure)
-```text
-src/
-├── app/              # Next.js App Router (Page, Layout)
-├── components/       # UI Components (Product Card, Navbar, etc.)
-├── store/            # Zustand State Management
-└── types/            # TypeScript Interface Definitions
+- **Frontend**: React
+- **Styling**: (Styled-components / CSS / Tailwind 등 실제 사용 기술로 수정)
+- **State Management**: (예: Zustand / Redux / Context API)
+- **Routing**: React Router
+
+<br/>
+
+## ⚙️ 기술 선택 이유
+
+- **React**  
+  → 컴포넌트 기반 구조로 UI를 효율적으로 관리하기 위해 선택
+
+- **상태 관리 라이브러리**  
+  → 장바구니 및 상품 상태를 전역에서 일관되게 관리하기 위해 사용
+
+- **React Router**  
+  → 페이지 간 이동 및 사용자 흐름 제어를 위해 사용
+
+<br/>
+
+
+## 🧩 아쉬운 점 및 개선 방향
+
+- 성능 최적화 미흡  
+  → 코드 스플리팅 및 lazy loading 적용 예정
+
+- 테스트 코드 부재  
+  → Jest, React Testing Library 도입 예정
+
+- 실제 결제 기능 미구현  
+  → 외부 결제 API 연동으로 확장 가능
+
+<br/>
+
+## 📁 프로젝트 구조
