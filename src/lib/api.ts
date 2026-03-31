@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useLoadingStore } from "@/store/useLoadingStore";
 
-const api = axios.create({
-    baseURL: '/api', // 공통 주소 설정
-    timeout: 5000, // 5초 이상 걸리면 에러 처리
-})
+export const api = axios.create({
+  baseURL: 'https://fakestoreapi.com', // '/api'를 지우고 주소 넣음
+  timeout: 5000,
+});
 
 // 요청 인터셉터 (데이터 요청 직전)
 api.interceptors.request.use((config) => {
