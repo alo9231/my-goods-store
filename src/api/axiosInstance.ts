@@ -3,7 +3,7 @@ import { useLoadingStore } from "@/store/useLoadingStore";
 
 export const api = axios.create({
   // 프록시(/api)를 쓰지 않고 실제 주소를 직접 입력합니다.
-  baseURL: 'https://fakestoreapi.com', 
+  baseURL: 'https://dummyjson.com', 
   timeout: 5000,
 });
 

@@ -69,9 +69,14 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                 {/* 왼쪽: 상품 이미지 : aspect-ratio를 활용해 높이를 고정 */}
                 <div className="aspect-square bg-white p-10 rounded-3xl border border-slate-100 shadow-sm flex justify-center items-center aspect-square">
-                    <img 
+                    {/*  ❌ 기존 코드 */}
+                    {/* <img 
                         src={product.image} 
                         alt={product.title} 
+                        className="max-h-full object-contain hover:scale-105 transition-transform duration-500" 
+                    /> */}
+                    {/* // ✅ 수정 코드 DummyJSON */}                    
+                    <img src={product.thumbnail || product.image} alt={product.title} 
                         className="max-h-full object-contain hover:scale-105 transition-transform duration-500" 
                     />
                 </div>

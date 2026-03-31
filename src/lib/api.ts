@@ -2,7 +2,7 @@ import axios from "axios";
 import { useLoadingStore } from "@/store/useLoadingStore";
 
 export const api = axios.create({
-  baseURL: 'https://fakestoreapi.com', // '/api'를 지우고 주소 넣음
+  baseURL: 'https://dummyjson.com', // '/api'를 지우고 주소 넣음
   timeout: 5000,
 });
 

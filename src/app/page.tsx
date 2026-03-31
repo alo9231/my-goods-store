@@ -25,7 +25,13 @@ export default function Home() {
         : `/products/category/${category.toLowerCase()}`;
 
       const res = await api.get(url);  // 👈 여기서 새로운 데이터를 서버에 요청!
-      setProducts(res.data); // 👈 받아온 새로운 데이터로 상태 교체
+    
+      // ❌ 기존 코드
+      // setProducts(res.data); // 👈 받아온 새로운 데이터로 상태 교체
+
+      // ✅ 수정 코드 (데이터 구조에 따라 선택)
+      // DummyJSON을 쓸 경우 res.data.products를 넣어줘야 함.
+      setProducts(Array.isArray(res.data) ? res.data : res.data.products);
 
     } catch (error) { // 3. 중괄호 추가
       console.log("상품 로드 실패 👉😶‍🌫️ ", error);

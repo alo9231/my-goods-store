@@ -35,10 +35,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* 1. 이미지 영역 (클릭 시 상세페이지 이동) : aspect-ratio를 활용해 높이 고정 */}
             <Link href={`/product/${product.id}`}>
                 <div className="aspect-square w-full mb-4 bg-slate-50 rounded-xl overflow-hidden cursor-pointer">            
-                    <img 
+                    {/*  ❌ 기존 코드 */}
+                    {/* <img 
                         src={product.image} 
                         alt={product.title} 
                         className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300' 
+                    /> */}
+                     {/* // ✅ 수정 코드 DummyJSON */}                    
+                    <img src={product.thumbnail || product.image} alt={product.title} 
+                        className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'  
                     />
                 </div>
             </Link>
