@@ -1,51 +1,156 @@
-# 🛒 My Goods Store (Shopping SPA)
-<p align="left">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Zustand-443E38?style=flat-square&logo=React&logoColor=white"/>
-  <img src="https://img.shields.io/badge/GSAP-88CE02?style=flat-square&logo=GSAP&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=Tailwind-CSS&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=Vercel&logoColor=white"/>
-</p>
+# 🛒 My Goods Store
 
-> **React(Vite)와 TypeScript**를 기반으로 한 인터랙티브 커머스 대시보드입니다.  
-> 사용자의 조작에 기분 좋게 반응하는 인터랙션을 구현하고, 안정적인 상태 관리를 통해 실무적인 SPA 구조를 설계했습니다.
+사용자가 상품을 탐색하고 장바구니에 담아 구매까지 이어지는 흐름을 경험할 수 있도록 구현한  
+이커머스 프론트엔드 웹 애플리케이션입니다.
 
-## 🔗 프로젝트 링크
-- **Live Demo**: [https://my-goods-store.vercel.app/](https://my-goods-store.vercel.app/)
+단순 기능 구현이 아닌,  
+**상태 관리 구조와 사용자 경험 개선에 초점을 맞춰 개발했습니다.**
+
+<br/>
+
+## 🔗 배포 링크
+👉 https://my-goods-store.vercel.app/
+
+<br/>
+
+## 📌 프로젝트 목적
+
+이 프로젝트는 이커머스 서비스에서 핵심적인 사용자 흐름인  
+**상품 탐색 → 선택 → 장바구니 → 구매 과정**을 자연스럽게 연결하는 것을 목표로 했습니다.
+
+특히 다음과 같은 문제를 해결하는 데 집중했습니다:
+
+- 상태가 여러 컴포넌트에 분산되면서 관리가 어려운 문제
+- UI 재사용성이 낮아지는 구조적 문제
+- 사용자 액션에 대한 피드백 부족
+
+<br/>
+
+## 🚀 주요 기능
+
+- 🛍 상품 목록 조회
+- 🔍 상품 상세 페이지
+- 🧺 장바구니 담기 / 삭제
+- ➕ 상품 수량 변경
+- 💳 구매 흐름 UI 구현
+
+<br/>
+
+## 💡 문제 해결 과정
+
+### 1. 전역 상태 관리로 데이터 흐름 단순화
+
+상품 목록, 장바구니, 선택 상태가 각각의 컴포넌트에 분산되면서  
+데이터 흐름을 추적하기 어려운 문제가 있었습니다.
+
+→ 이를 해결하기 위해 (Zustand / Context API 등 실제 사용 기술 입력)을 활용하여  
+**전역 상태로 관리 구조를 통합**했습니다.
+
+✔️ 결과  
+- 컴포넌트 간 props drilling 감소  
+- 상태 변경 흐름 명확화  
+- 유지보수 용이성 향상  
 
 ---
 
-## 📑 주요 기능 (Key Features)
+### 2. 컴포넌트 구조 리팩토링으로 재사용성 개선
 
-### ✅ 실시간 상품 필터링 (Dynamic Filtering)
-- **Fake Store API** 연동을 통한 실시간 카테고리 필터링 시스템 구현
-- `Zustand` 전역 상태 관리를 통해 탭 전환 시 즉각적인 데이터 동기화 처리
+초기에는 페이지 단위로 UI를 구성하면서  
+유사한 UI 코드가 반복되는 문제가 발생했습니다.
 
-### ✅ 고도화된 인터랙티브 UI (GSAP Animation)
-- **Stagger Motion**: 상품 리스트 렌더링 시 시각적 흐름을 부여하는 순차 등장 애니메이션 적용
-- **Render Control**: `useRef`를 활용해 페이지 진입 시 불필요한 깜빡임을 제어하고, 필터 동작 시에만 모션이 작동하도록 UX 최적화
+→ 공통 UI 요소를 분리하고 역할 단위로 컴포넌트를 재구성하여  
+**재사용 가능한 구조로 개선**했습니다.
 
-### ✅ 장바구니 시스템 (Cart Logic)
-- SPA 구조 내에서 장바구니 담기, 상태 유지 및 비어있는 예외 케이스 처리
-- Next.js의 `Link` 컴포넌트와 인터랙티브 피드백을 통한 부드러운 페이지 전환
-
----
-
-## 🛠 기술적 고민 (Problem Solving)
-
-### 1. 초기 렌더링 애니메이션 제어
-페이지 이동 후 메인으로 돌아올 때마다 GSAP 애니메이션이 재실행되어 화면이 깜빡이는 현상이 있었습니다. 이를 해결하기 위해 `useRef`로 첫 마운트 여부를 추적하고, 마운트 시점에는 `gsap.set`을, 이후 필터 변경 시에만 `gsap.fromTo`가 작동하도록 로직을 개선하여 사용자 경험을 향상시켰습니다.
-
-### 2. 효율적인 전역 상태 관리
-장바구니 정보와 선택된 카테고리를 `Zustand`로 관리하여, 불필요한 Props Drilling을 방지하고 컴포넌트 간 데이터 전달 구조를 단순화했습니다.
+✔️ 결과  
+- 코드 중복 감소  
+- UI 수정 시 영향 범위 최소화  
+- 확장성 개선  
 
 ---
 
-## 📂 폴더 구조 (Directory Structure)
+### 3. 사용자 경험(UX) 개선
+
+장바구니 추가 및 수량 변경 시 사용자 피드백이 부족해  
+상호작용이 직관적이지 않은 문제가 있었습니다.
+
+→ 상태 변화에 따라 UI가 즉각 반응하도록 구현하여  
+**사용자 인터랙션 경험을 개선**했습니다.
+
+예:
+- 장바구니 추가 시 UI 즉시 반영
+- 수량 변경 시 실시간 업데이트
+
+---
+
+## 🔧 API 구조 개선
+
+기존에는 컴포넌트 내부에서 직접 API를 호출하여  
+로직이 분산되고 재사용이 어려운 문제가 있었습니다.
+
+→ API 호출을 별도의 모듈로 분리하고  
+→ 공통 API 클라이언트를 도입하여 구조를 개선했습니다.
+
+### 개선 효과
+
+- API 호출 로직 재사용 가능
+- 에러 처리 일관성 확보
+- 컴포넌트 역할 분리 (UI vs 데이터)
+
+## 🛠 기술 스택
+
+- **Frontend**: React
+- **Styling**: (사용한 스타일링 기술 입력)
+- **State Management**: (Zustand / Redux / Context API)
+- **Routing**: React Router
+
+<br/>
+
+## ⚙️ 기술 선택 이유
+
+- **React**  
+  → 컴포넌트 기반 구조로 UI를 효율적으로 관리하기 위해 선택
+
+- **상태 관리 라이브러리**  
+  → 장바구니 및 상품 상태를 전역에서 일관되게 관리하기 위해 사용
+
+- **React Router**  
+  → 사용자 흐름에 맞는 페이지 전환을 구현하기 위해 사용
+
+<br/>
+
+## 📷 실행
+
+- 메인 페이지
+- 상품 상세 페이지
+- 장바구니
+
+
+## 🧩 아쉬운 점 및 개선 방향
+
+- 테스트 코드 미작성  
+  → Jest / React Testing Library 도입 예정
+
+
+<br/>
+
+## 📁 프로젝트 구조
+
 ```text
 src/
-├── app/              # Next.js App Router (Page, Layout)
-├── components/       # UI Components (Product Card, Navbar, etc.)
-├── store/            # Zustand State Management
-└── types/            # TypeScript Interface Definitions
+├── api/                # API 통신 (Axios 인스턴스, Endpoint 관리)
+├── assets/             # 정적 리소스 (Images, Fonts, Global SCSS)
+│   ├── images/         # 이미지 파일
+│   └── styles/         # 공통 스타일 (_variables.scss, _mixin.scss)
+├── components/         # 재사용 가능한 공통 UI 컴포넌트
+│   ├── common/         # Button, Input, Modal, Loader 등
+│   ├── layout/         # Header, Footer, Navigation 등 레이아웃
+│   └── product/        # 상품 카드, 상품 상세 리스트 등 도메인 컴포넌트
+├── hooks/              # 커스텀 훅 (비즈니스 로직 분리)
+├── pages/              # 라우트 단위 페이지 컴포넌트
+│   ├── Home/           # 메인 페이지
+│   ├── Login/          # 로그인 페이지
+│   └── Cart/           # 장바구니 페이지
+├── store/              # 전역 상태 관리 (Redux, Zustand, Pinia 등)
+├── utils/              # 공통 유틸리티 함수 (날짜 포맷팅, 로컬스토리지 제어 등)
+├── App.js              # 최상위 루트 컴포넌트
+└── main.js             # 엔트리 포인트 (애플리케이션 시작점)
