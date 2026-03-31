@@ -2,12 +2,12 @@ import axios from "axios";
 import { useLoadingStore } from "@/store/useLoadingStore";
 
 export const api = axios.create({
-  // 프록시(/api)를 거치지 않고 직접 API 서버 주소를 사용
+  // 프록시(/api)를 쓰지 않고 실제 주소를 직접 입력합니다.
   baseURL: 'https://fakestoreapi.com', 
   timeout: 5000,
 });
 
-// 기존 인터셉터 로직은 그대로 유지
+// 인터셉터 로직 (기존과 동일)
 api.interceptors.request.use((config) => {
   useLoadingStore.getState().setIsLoading(true);
   return config;
