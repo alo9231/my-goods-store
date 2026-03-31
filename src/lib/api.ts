@@ -2,7 +2,7 @@ import axios from "axios";
 import { useLoadingStore } from "@/store/useLoadingStore";
 
 const api = axios.create({
-    baseURL: 'https://fakestoreapi.com', // 공통 주소 설정
+    baseURL: '/api', // 공통 주소 설정
     timeout: 5000, // 5초 이상 걸리면 에러 처리
 })
 
