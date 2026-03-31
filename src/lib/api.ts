@@ -6,6 +6,7 @@ export const api = axios.create({
   timeout: 5000,
 });
 
+
 // 요청 인터셉터 (데이터 요청 직전)
 api.interceptors.request.use((config) => {
     // 여기서 로딩 스피너를 켬! (예: Zustand 스토어의 전역 로딩 true)

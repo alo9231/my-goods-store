@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import api from '@/lib/api'; 
+import { api } from '@/api/axiosInstance';
 import gsap from 'gsap'; 
 import { Product } from '@/types/product';
 import ProductCard from '@/components/ProductCard';

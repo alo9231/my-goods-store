@@ -2,7 +2,7 @@
 
 import { useCartStore } from "@/store/useCartStore"; 
 import Link from "next/link";
-import api from '@/lib/api';
+import { api } from '@/api/axiosInstance';
 import { use, useEffect, useState } from "react";
 import { ChevronLeft, ShoppingCart } from "lucide-react"; // 아이콘 추가
 
