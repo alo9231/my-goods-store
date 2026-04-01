@@ -7,6 +7,7 @@ interface Product {
   title: string;
   price: number;
   image: string;
+  thumbnail?: string;
   quantity: number; // 수량은 필수값으로 설정
 }
 
