@@ -11,13 +11,27 @@ export default function Home() {
   // 1. 변수명 통일: selectedCategory로 고정
   const [selectedCategory, setSelectedCategory] = useState('all');
   const isFirstRender = useRef(true); 
+  const [categories, setCategories] = useState<string[]>(['all']); // 👉 카테고리 목록을 담을 상태 추가 (초기값은 'all'만 포함)
 
-  // fakeAPI 용
-  // const categories = ["all", "electronics", "jewelry", "men's clothing", "women's clothing"];
-  
-  // dummy API용
-  const categories = ["all", "beauty", "fragrances", "furniture", "groceries"];
+  // 카테고리 목록과 상품을 가져오는 로직 분리 또는 통합
+  useEffect(() => {
+    const initData = async () => {
+      try{
+        // 카테고리 목록 가져오기 (DummyJSON 기준: /products/category-list)
+        const catRes = await api.get('/products/category-list');
+        if(Array.isArray(catRes.data)){
+          // 'all'을 맨 앞에 두고 API에서 받은 카테고리들 합치기
+          setCategories(['all', ...catRes.data]);
+        }
 
+        // 초기 상품 로드
+        fetchProducts('all');
+      }catch(error){
+        console.log("카테고리 로드 실패 에러~~! ", error);
+      }
+    };
+    initData();
+  }, []);
 
   // 2. 함수명 오타 수정 및 로직 정리
   const fetchProducts = async (category : string) => {
@@ -30,30 +44,21 @@ export default function Home() {
         : `/products/category/${category}`;
 
       const res = await api.get(url);  // 👈 여기서 새로운 데이터를 서버에 요청!
-      console.log("받아온 데이터:", res.data);
-      // ❌ 기존 코드
-      // setProducts(res.data); // 👈 받아온 새로운 데이터로 상태 교체
-
-      // ✅ 수정 코드 (데이터 구조에 따라 선택)
-      // DummyJSON을 쓸 경우 res.data.products를 넣어줘야 함.
-      // setProducts(Array.isArray(res.data) ? res.data : res.data.products);
-
+      //console.log("받아온 데이터:", res.data);
       
-    // 콘솔에서 확인한 대로 response.data.products를 저장
-    if (res.data && Array.isArray(res.data.products)) {
-      setProducts(res.data.products);
-    }
-    
+      // 콘솔에서 확인한 대로 response.data.products를 저장
+      if (res.data && Array.isArray(res.data.products)) {
+        setProducts(res.data.products);
+      }else if (Array.isArray(res.data)){
+        setProducts(res.data);
+      }      
    
     } catch (error) { // 3. 중괄호 추가
       console.log("상품 로드 실패 👉😶‍🌫️ ", error);
     }
   };
 
-  // 초기 로딩
-  useEffect(() => {
-    fetchProducts('all');
-  }, []);
+
 
   // ✨ GSAP 애니메이션
   useEffect(() => {
@@ -90,7 +95,7 @@ export default function Home() {
             <button
               key={category}
               // 클라이언트 필터링 대신 서버에 다시 요청하도록 변경
-              onClick={() => {console.log("클릭된 카테고리:", category); fetchProducts(category)}} // 클릭한 카테고리 데이터 요청
+              onClick={() => fetchProducts(category)} // 클릭한 카테고리 데이터 요청
               className={`uppercase px-6 py-2 rounded-full text-sm font-bold transition-all ${
                 selectedCategory === category
                   ? 'bg-blue-600 text-white shadow-md'
