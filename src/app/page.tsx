@@ -12,27 +12,39 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const isFirstRender = useRef(true); 
 
-  const categories = ["all", "electronics", "jewelery", "men's clothing", "women's clothing"];
+  // fakeAPI 용
+  // const categories = ["all", "electronics", "jewelry", "men's clothing", "women's clothing"];
+  
+  // dummy API용
+  const categories = ["all", "beauty", "fragrances", "furniture", "groceries"];
+
 
   // 2. 함수명 오타 수정 및 로직 정리
   const fetchProducts = async (category : string) => {
     try {
-      setSelectedCategory(category);
+      setSelectedCategory(category); // 현재 선택된 카테고리 상태 변경
 
       // API 주소 분기 처리
       const url = category === 'all'
         ? '/products'
-        : `/products/category/${category.toLowerCase()}`;
+        : `/products/category/${category}`;
 
       const res = await api.get(url);  // 👈 여기서 새로운 데이터를 서버에 요청!
-    
+      console.log("받아온 데이터:", res.data);
       // ❌ 기존 코드
       // setProducts(res.data); // 👈 받아온 새로운 데이터로 상태 교체
 
       // ✅ 수정 코드 (데이터 구조에 따라 선택)
       // DummyJSON을 쓸 경우 res.data.products를 넣어줘야 함.
-      setProducts(Array.isArray(res.data) ? res.data : res.data.products);
+      // setProducts(Array.isArray(res.data) ? res.data : res.data.products);
 
+      
+    // 콘솔에서 확인한 대로 response.data.products를 저장
+    if (res.data && Array.isArray(res.data.products)) {
+      setProducts(res.data.products);
+    }
+    
+   
     } catch (error) { // 3. 중괄호 추가
       console.log("상품 로드 실패 👉😶‍🌫️ ", error);
     }
@@ -78,14 +90,14 @@ export default function Home() {
             <button
               key={category}
               // 클라이언트 필터링 대신 서버에 다시 요청하도록 변경
-              onClick={() => fetchProducts(category)} // 클릭한 카테고리 데이터 요청
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
+              onClick={() => {console.log("클릭된 카테고리:", category); fetchProducts(category)}} // 클릭한 카테고리 데이터 요청
+              className={`uppercase px-6 py-2 rounded-full text-sm font-bold transition-all ${
                 selectedCategory === category
                   ? 'bg-blue-600 text-white shadow-md'
                   : 'bg-white text-slate-500 hover:bg-slate-100 border border-slate-200'
               }`}
             >
-              {category === 'all' ? '전체' : category.toUpperCase()}
+              {category === 'all' ? '전체' : category}
             </button>
           ))}
         </div>

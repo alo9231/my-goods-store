@@ -5,16 +5,8 @@ import Link from "next/link";
 import { api } from '@/api/axiosInstance';
 import { use, useEffect, useState } from "react";
 import { ChevronLeft, ShoppingCart } from "lucide-react"; // 아이콘 추가
+import { Product } from '@/types/product';
 
-interface Product {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-    thumbnail?: string;
-}
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
     // 1. Next.js 15+ 방식대로 params 풀기

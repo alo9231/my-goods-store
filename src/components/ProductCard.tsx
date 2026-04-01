@@ -8,11 +8,9 @@ import { ShoppingCart, Star } from 'lucide-react'; // 아이콘 두 개 다 있�
 import Link from 'next/link';
 import gsap from 'gsap';
 
-interface ProductCardProps {
-    product : Product;
-}
 
-export default function ProductCard({ product }: ProductCardProps) {
+
+export default function ProductCard({ product }: {product : Product}) {
     const addItem = useCartStore((state) => state.addItem);
 
     // 애니메이션과 기능을 합친 핸들러 함수를 만들면 코드가 더 깔끔해잠
@@ -63,8 +61,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {/* 3. 별점 아이콘 영역 (Star 아이콘 및 평점 데이터) */}
                 <div className='flex items-center gap-1 mb-1'>
                     <Star className='w-4 h-4 fill-yellow-400 text-yellow-400' />
-                    <span className='text-sm font-medium text-slate-600'>{product.rating.rate}</span>
-                    <span className='text-xs text-slate-400'>({product.rating.count})</span>
+                    <span className='text-sm font-medium text-slate-600'>{product.rating?.rate || 0}</span>{/* ✅ ?. 와 || 0 추가 */}
+                    <span className='text-xs text-slate-400'>({product.rating?.count || 0})</span>{/* ✅ ?. 와 || 0 추가 */}
                 </div>
 
                 {/* 4. 가격 및 장바구니 버튼 (addItem 함수 연결) */}

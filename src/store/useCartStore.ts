@@ -1,15 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware'; // 1. 미들웨어 임포트
+import { Product } from '@/types/product';
 
-
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  thumbnail?: string;
-  quantity: number; // 수량은 필수값으로 설정
-}
 
 interface CartState {
   cart: Product[];
@@ -32,7 +24,7 @@ export const useCartStore = create<CartState>()(
         if (isExist) {
           return {
             cart: state.cart.map((item) =>
-              item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+              item.id === product.id ? { ...item, quantity: (item.quantity || 0) + 1 } : item // ✅ (item.quantity || 0) 추가 - item.quantity가 만약 비어있더라도(undefined), 0을 기본값으로 사용
             ),
           };
         }
@@ -42,15 +34,15 @@ export const useCartStore = create<CartState>()(
       // 수량 증가 (+)
       addQuantity: (id) => set((state) => ({
         cart: state.cart.map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === id ? { ...item, quantity: (item.quantity || 0) + 1 } : item
         ),
       })),
 
       // 수량 감소 (-)
       removeQuantity: (id) => set((state) => ({
         cart: state.cart.map((item) =>
-          item.id === id && item.quantity > 1 
-            ? { ...item, quantity: item.quantity - 1 } 
+          item.id === id && (item.quantity || 0) > 1 
+            ? { ...item, quantity: (item.quantity || 0) - 1 } 
             : item
         ),
       })),

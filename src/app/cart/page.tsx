@@ -9,7 +9,7 @@ export default function CartPage() {
   const { cart, addQuantity, removeQuantity, deleteItem, clearCart } = useCartStore();
   
   // 총 결제 금액 계산
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce((acc, item) => acc + item.price * (item.quantity || 0), 0);
 
   // 전체 삭제 핸들러
   const handleClearCart = () => {
@@ -53,7 +53,10 @@ export default function CartPage() {
 
               {/* 상품 이미지 : aspect-ratio를 활용해 높이를 고정 */}
               <div className="aspect-square w-20 h-20 bg-white rounded-xl border border-slate-100 p-2 flex items-center justify-center shadow-sm">
-                <img src={item.image} alt={item.title} className="w-16 h-16 object-contain" />
+                {/* ✅ 수정 코드: item.thumbnail을 우선 사용하고, 없으면 item.image 사용 */}
+                <img  src={item.thumbnail || item.image}  
+                      alt={item.title} className="w-16 h-16 object-contain"
+                 />
               </div>
               
               {/* 상품 정보 */}
