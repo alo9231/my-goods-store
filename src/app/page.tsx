@@ -4,93 +4,91 @@ import { useState, useEffect, useRef } from 'react';
 import { api } from '@/api/axiosInstance';
 import gsap from 'gsap'; 
 import { Product } from '@/types/product';
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/product/ProductCard';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   // 1. 변수명 통일: selectedCategory로 고정
   const [selectedCategory, setSelectedCategory] = useState('all');
   const isFirstRender = useRef(true); 
+  const containerRef = useRef(null); // ✅ GSAP context용 ref
   const [categories, setCategories] = useState<string[]>(['all']); // 👉 카테고리 목록을 담을 상태 추가 (초기값은 'all'만 포함)
 
-  // 카테고리 목록과 상품을 가져오는 로직 분리 또는 통합
+  // 초기 데이터(카테고리 목록) 로드
   useEffect(() => {
-    const initData = async () => {
-      try{
-        // 카테고리 목록 가져오기 (DummyJSON 기준: /products/category-list)
-        const catRes = await api.get('/products/category-list');
+    const fetchCategories = async () => {
+      try{     
+        const catRes = await api.get('/products/category-list');  // 카테고리 목록 가져오기 (DummyJSON 기준: /products/category-list)
         if(Array.isArray(catRes.data)){
           // 'all'을 맨 앞에 두고 API에서 받은 카테고리들 합치기
           setCategories(['all', ...catRes.data]);
-        }
-
-        // 초기 상품 로드
-        fetchProducts('all');
+        }      
       }catch(error){
         console.log("카테고리 로드 실패 에러~~! ", error);
       }
     };
-    initData();
+
+    fetchCategories();     
+    fetchProducts('all'); // 초기 상품 로드
   }, []);
 
-  // 2. 함수명 오타 수정 및 로직 정리
+  // 상품 가져오기 함수
   const fetchProducts = async (category : string) => {
     try {
       setSelectedCategory(category); // 현재 선택된 카테고리 상태 변경
 
       // API 주소 분기 처리
-      const url = category === 'all'
-        ? '/products'
-        : `/products/category/${category}`;
-
+      const url = category === 'all' ? '/products' : `/products/category/${category}`;
       const res = await api.get(url);  // 👈 여기서 새로운 데이터를 서버에 요청!
-      //console.log("받아온 데이터:", res.data);
-      
-      // 콘솔에서 확인한 대로 response.data.products를 저장
-      if (res.data && Array.isArray(res.data.products)) {
-        setProducts(res.data.products);
-      }else if (Array.isArray(res.data)){
-        setProducts(res.data);
-      }      
+      //console.log("받아온 데이터:", res.data);      
+
+      // DummyJSON 응답 구조에 맞게 세팅
+      const data = res.data.products || res.data;
+      setProducts(Array.isArray(data) ? data : []);
    
     } catch (error) { // 3. 중괄호 추가
       console.log("상품 로드 실패 👉😶‍🌫️ ", error);
+      setProducts([]); // 에러 시 빈 배열 처리
     }
   };
-
 
 
   // ✨ GSAP 애니메이션
   useEffect(() => {
     if (products.length === 0) return;
 
+    // 첫 렌더링 시에는 애니메이션 없이 즉시 노출 (isFirstRender 활용)
     if (isFirstRender.current) {
       gsap.set(".product-card", { opacity: 1, y: 0 });
-      isFirstRender.current = false; 
+      isFirstRender.current = false;
       return;
     }
 
-    // 카테고리 변경 시 애니메이션
-    gsap.fromTo(".product-card", 
-      { opacity: 0, y: 30 }, 
-      { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.5, 
-        stagger: 0.08, 
-        ease: "back.out(1.2)" 
-      }
-    );
-  }, [products]); // 4. products 데이터가 바뀔 때마다 실행되도록 변경
+    // 카테고리 변경 시 실행될 애니메이션
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".product-card", 
+        { opacity: 0, y: 30 }, 
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.5, 
+          stagger: 0.05, // 살짝 더 빠르게 조정
+          ease: "power2.out" 
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert(); // 컴포넌트 언마운트 시 정리
+  }, [products]); // products 데이터가 바뀔 때마다 실행되도록 변경
 
   return (
-    <main className="min-h-screen bg-slate-50 p-8">
+    <main className="min-h-screen bg-slate-50 p-8" ref={containerRef}>
       <header className="mb-12 text-center">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">
           내 취업 성공 굿즈 스토어
         </h1>
         
-        <div className="flex flex-wrap justify-center gap-2 mt-8 mb-12">
+        <div className="max-w-7xl mx-auto items-center flex flex-wrap justify-center gap-2 mt-8 mb-12">
           {categories.map((category) => (
             <button
               key={category}

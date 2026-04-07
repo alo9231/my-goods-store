@@ -1,8 +1,8 @@
-import LoadingSpinner from '@/components/LoadingSpinner';
-import Navbar from "@/components/Navbar";
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import Navbar from "@/components/layout/Navbar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 
 
 const geistSans = Geist({
