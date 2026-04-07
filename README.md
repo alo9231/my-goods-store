@@ -135,22 +135,29 @@
 
 ## 📁 프로젝트 구조
 
+## 📂 폴더 구조 (Project Structure)
+
 ```text
 src/
-├── api/                # API 통신 (Axios 인스턴스, Endpoint 관리)
-├── assets/             # 정적 리소스 (Images, Fonts, Global SCSS)
-│   ├── images/         # 이미지 파일
-│   └── styles/         # 공통 스타일 (_variables.scss, _mixin.scss)
-├── components/         # 재사용 가능한 공통 UI 컴포넌트
-│   ├── common/         # Button, Input, Modal, Loader 등
-│   ├── layout/         # Header, Footer, Navigation 등 레이아웃
-│   └── product/        # 상품 카드, 상품 상세 리스트 등 도메인 컴포넌트
-├── hooks/              # 커스텀 훅 (비즈니스 로직 분리)
-├── pages/              # 라우트 단위 페이지 컴포넌트
-│   ├── Home/           # 메인 페이지
-│   ├── Login/          # 로그인 페이지
-│   └── Cart/           # 장바구니 페이지
-├── store/              # 전역 상태 관리 (Redux, Zustand, Pinia 등)
-├── utils/              # 공통 유틸리티 함수 (날짜 포맷팅, 로컬스토리지 제어 등)
-├── App.js              # 최상위 루트 컴포넌트
-└── main.js             # 엔트리 포인트 (애플리케이션 시작점)
+├── api/
+│   └── axiosInstance.ts      # Axios 공통 설정 및 인터셉터 (로딩 상태 관리)
+├── app/
+│   ├── cart/
+│   │   └── page.tsx          # 장바구니 페이지
+│   ├── product/[id]/
+│   │   └── page.tsx          # 상품 상세 페이지 (다이내믹 라우팅)
+│   ├── layout.tsx            # 전체 레이아웃 (Global Navigation 포함)
+│   ├── page.tsx              # 메인 페이지 (상품 목록 및 카테고리 필터링)
+│   └── favicon.ico
+├── components/
+│   ├── common/               # 공용 UI 컴포넌트 (LoadingSpinner 등)
+│   ├── layout/               # 레이아웃 관련 컴포넌트 (Navbar 등)
+│   └── product/              # 상품 도메인 관련 컴포넌트 (ProductCard 등)
+├── store/
+│   ├── useCartStore.ts       # 장바구니 상태 관리 (Zustand)
+│   └── useLoadingStore.ts    # 전역 로딩 상태 관리 (Zustand)
+├── styles/
+│   └── globals.css           # 글로벌 스타일 및 Tailwind CSS 설정
+├── types/
+│   └── product.ts            # 상품 및 API 데이터 타입 정의
+└── lib/                      # 기타 유틸리티 및 공통 로직
