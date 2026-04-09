@@ -1,16 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware'; // 1. 미들웨어 임포트
-import { Product } from '@/types/product';
+import { CartState } from '@/types/cart';
 
 
-interface CartState {
-  cart: Product[];
-  addItem: (product: Product) => void;
-  addQuantity: (id: number) => void;    // 수량 +
-  removeQuantity: (id: number) => void; // 수량 -
-  deleteItem: (id: number) => void;     // 삭제
-  clearCart: () => void; // 👈 전체 삭제 
-}
 
 // 1. 여기에 persist((set) => ({ ... }), { name: '...' }) 구조로 감싸야 함
 export const useCartStore = create<CartState>()(

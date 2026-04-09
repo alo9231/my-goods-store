@@ -1,9 +1,5 @@
 import { create } from 'zustand';
-
-interface LoadingState {
-  isLoading: boolean;
-  setIsLoading: (status: boolean) => void;
-}
+import { LoadingState } from '@/types/loading';
 
 export const useLoadingStore = create<LoadingState>(
     (set) => ({
