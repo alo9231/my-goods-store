@@ -1,163 +1,28 @@
 # 🛒 My Goods Store
 
-사용자가 상품을 탐색하고 장바구니에 담아 구매까지 이어지는 흐름을 경험할 수 있도록 구현한  
-이커머스 프론트엔드 웹 애플리케이션입니다.
+사용자 경험(UX)과 상태 관리 효율성에 집중한 **이커머스 프론트엔드 프로젝트**입니다.
 
-단순 기능 구현이 아닌,  
-**상태 관리 구조와 사용자 경험 개선에 초점을 맞춰 개발했습니다.**
+## 🔗 링크
+- **Deploy**: [https://my-goods-store.vercel.app/](https://my-goods-store.vercel.app/)
 
-<br/>
-
-## 🔗 배포 링크
-👉 https://my-goods-store.vercel.app/
-
-<br/>
-
-## 📌 프로젝트 목적
-
-이 프로젝트는 이커머스 서비스에서 핵심적인 사용자 흐름인  
-**상품 탐색 → 선택 → 장바구니 → 구매 과정**을 자연스럽게 연결하는 것을 목표로 했습니다.
-
-특히 다음과 같은 문제를 해결하는 데 집중했습니다:
-
-- 상태가 여러 컴포넌트에 분산되면서 관리가 어려운 문제
-- UI 재사용성이 낮아지는 구조적 문제
-- 사용자 액션에 대한 피드백 부족
-
-<br/>
-
-## 🚀 주요 기능
-
-- 🛍 상품 목록 조회
-- 🔍 상품 상세 페이지
-- 🧺 장바구니 담기 / 삭제
-- ➕ 상품 수량 변경
-- 💳 구매 흐름 UI 구현
-
-<br/>
-
-## 💡 문제 해결 과정
-
-### 1. 전역 상태 관리로 데이터 흐름 단순화
-
-상품 목록, 장바구니, 선택 상태가 각각의 컴포넌트에 분산되면서  
-데이터 흐름을 추적하기 어려운 문제가 있었습니다.
-
-→ 이를 해결하기 위해 (Zustand / Context API 등 실제 사용 기술 입력)을 활용하여  
-**전역 상태로 관리 구조를 통합**했습니다.
-
-✔️ 결과  
-- 컴포넌트 간 props drilling 감소  
-- 상태 변경 흐름 명확화  
-- 유지보수 용이성 향상  
-
----
-
-### 2. 컴포넌트 구조 리팩토링으로 재사용성 개선
-
-초기에는 페이지 단위로 UI를 구성하면서  
-유사한 UI 코드가 반복되는 문제가 발생했습니다.
-
-→ 공통 UI 요소를 분리하고 역할 단위로 컴포넌트를 재구성하여  
-**재사용 가능한 구조로 개선**했습니다.
-
-✔️ 결과  
-- 코드 중복 감소  
-- UI 수정 시 영향 범위 최소화  
-- 확장성 개선  
-
----
-
-### 3. 사용자 경험(UX) 개선
-
-장바구니 추가 및 수량 변경 시 사용자 피드백이 부족해  
-상호작용이 직관적이지 않은 문제가 있었습니다.
-
-→ 상태 변화에 따라 UI가 즉각 반응하도록 구현하여  
-**사용자 인터랙션 경험을 개선**했습니다.
-
-예:
-- 장바구니 추가 시 UI 즉시 반영
-- 수량 변경 시 실시간 업데이트
-
----
-
-## 🔧 API 구조 개선
-
-기존에는 컴포넌트 내부에서 직접 API를 호출하여  
-로직이 분산되고 재사용이 어려운 문제가 있었습니다.
-
-→ API 호출을 별도의 모듈로 분리하고  
-→ 공통 API 클라이언트를 도입하여 구조를 개선했습니다.
-
-### 개선 효과
-
-- API 호출 로직 재사용 가능
-- 에러 처리 일관성 확보
-- 컴포넌트 역할 분리 (UI vs 데이터)
+## 🚀 핵심 해결 과정
+1. **Zustand 전역 상태 관리**: `persist`를 사용하여 새로고침 시에도 장바구니 데이터 유지 및 Prop Drilling 해결
+2. **비즈니스 로직 분리**: API 호출과 상태 변경 로직을 컴포넌트 외부로 분리하여 UI 가독성 확보
+3. **타입 시스템 구축**: 도메인별(Product, Cart, Loading) Interface 분리로 유지보수성 및 안정성 강화
+4. **사용자 인터랙션**: Axios 인터셉터를 활용한 전역 로딩 처리 및 즉각적인 UI 피드백 구현
 
 ## 🛠 기술 스택
+- **Framework**: Next.js (App Router), TypeScript
+- **State**: Zustand
+- **Styling**: Tailwind CSS
+- **Network**: Axios
 
-- **Frontend**: React
-- **Styling**: (사용한 스타일링 기술 입력)
-- **State Management**: (Zustand / Redux / Context API)
-- **Routing**: React Router
-
-<br/>
-
-## ⚙️ 기술 선택 이유
-
-- **React**  
-  → 컴포넌트 기반 구조로 UI를 효율적으로 관리하기 위해 선택
-
-- **상태 관리 라이브러리**  
-  → 장바구니 및 상품 상태를 전역에서 일관되게 관리하기 위해 사용
-
-- **React Router**  
-  → 사용자 흐름에 맞는 페이지 전환을 구현하기 위해 사용
-
-<br/>
-
-## 📷 실행
-
-- 메인 페이지
-- 상품 상세 페이지
-- 장바구니
-
-
-## 🧩 아쉬운 점 및 개선 방향
-
-- 테스트 코드 미작성  
-  → Jest / React Testing Library 도입 예정
-
-
-<br/>
-
-## 📁 프로젝트 구조
-
-## 📂 폴더 구조 (Project Structure)
-
+## 📂 폴더 구조
 ```text
 src/
-├── api/
-│   └── axiosInstance.ts      # Axios 공통 설정 및 인터셉터 (로딩 상태 관리)
-├── app/
-│   ├── cart/
-│   │   └── page.tsx          # 장바구니 페이지
-│   ├── product/[id]/
-│   │   └── page.tsx          # 상품 상세 페이지 (다이내믹 라우팅)
-│   ├── layout.tsx            # 전체 레이아웃 (Global Navigation 포함)
-│   ├── page.tsx              # 메인 페이지 (상품 목록 및 카테고리 필터링)
-│   └── favicon.ico
-├── components/
-│   ├── common/               # 공용 UI 컴포넌트 (LoadingSpinner 등)
-│   ├── layout/               # 레이아웃 관련 컴포넌트 (Navbar 등)
-│   └── product/              # 상품 도메인 관련 컴포넌트 (ProductCard 등)
-├── store/
-│   ├── useCartStore.ts       # 장바구니 상태 관리 (Zustand)
-│   └── useLoadingStore.ts    # 전역 로딩 상태 관리 (Zustand)
-├── styles/
-│   └── globals.css           # 글로벌 스타일 및 Tailwind CSS 설정
-├── types/
-│   └── product.ts            # 상품 및 API 데이터 타입 정의
-└── lib/                      # 기타 유틸리티 및 공통 로직
+├── api/          # Axios 인스턴스 및 인터셉터 설정
+├── app/          # App Router 기반 페이지 (Main, Detail, Cart)
+├── components/   # 역할별 컴포넌트 (Common, Layout, Product)
+├── store/        # Zustand Stores (Cart, Loading)
+├── types/        # 도메인별 타입 정의 (cart.ts, product.ts 등)
+└── styles/       # Global CSS & Tailwind Config
